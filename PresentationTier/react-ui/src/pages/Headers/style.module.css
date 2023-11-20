@@ -1,0 +1,151 @@
+.header {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: thin solid rgb(169,169,169, 0.5);
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.logo {
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+.logoName {
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.searchBar {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.searchBar input[type="text"] {
+    width: 500px;
+    height: 30px;
+    border-radius: 30px;
+    padding: 5px 10px;
+}
+
+.searchBar .searchIcon {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.iconsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+
+.notification {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 30px;
+    cursor: pointer;
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+
+.userIcon {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.optionList {
+    position: absolute;
+    top: calc(10% + 10px);
+    /* Position the list below the user icon */
+    right: 5px;
+    width: 250px;
+    /* Adjust the width as needed */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    /* Hide the list by default */
+}
+
+.submenu {
+    opacity: 1;
+    background: #d8d8d8;
+    padding: 20px;
+    margin: 10px;
+}
+
+.userinfo {
+    display: flex;
+    align-items: center;
+}
+
+.userinfo h6 {
+    padding-left: 9px;
+    font-weight: 500;
+}
+
+.submenu hr {
+    border: 0;
+    height: 2px;
+    width: 100%;
+    background: #151515;
+    margin: 15px 0 10px;
+}
+
+.submenuLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #363636;
+    margin: 12px 0;
+}
+
+.submenuLink p {
+    width: 100%;
+}
+
+.submenuIcon {
+    width: 28px;
+    height: 28px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.submenuLink span {
+    font-size: 20px;
+    transition: transform 0.5s;
+}
+
+.submenuLink:hover span {
+    transform: translateX(8px);
+}
+
+.submenuLink:hover p {
+    font-weight: 600;
+}

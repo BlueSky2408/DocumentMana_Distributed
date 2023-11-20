@@ -1,0 +1,19 @@
+.containerFooter {
+    background-color: #edf0f5;
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.containerFooter p {
+    color: #969696;
+    justify-content: center;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+strong {
+    color: #246ef3;
+}
