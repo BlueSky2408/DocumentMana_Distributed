@@ -1,11 +1,14 @@
-import { fetchListDocumentApi,
+import {
+    fetchListDocumentApi,
     fetchUploadDocumentApi,
+    fetchRenameDocumentApi,
     fetchDeleteDocumentApi,
 } from '../api/documentsAPI';
 
-import { 
+import {
     fetchListDocuments, fetchSuccessDocuments, fetchFailureDocuments,
     fetchUploadDocuments, fetchUploadDocumentsSuccess, fetchUploadDocumentsFailure,
+    fetchRenameDocuments, fetchRenameDocumentsSuccess, fetchRenameDocumentsFailure,
     fetchDeleteDocuments, fetchDeleteDocumentsSuccess, fetchDeleteDocumentsFailure,
 } from '../reducers/documents';
 import {
@@ -19,10 +22,9 @@ function* actionFetchDocuments(action) {
     try {
         const params = action.payload;
         const response = yield call(fetchListDocumentApi, params);
-        // console.log(response);
-        // Extracting data from the server response
         if (response.status === 200) {
             const documents = response.data.data;
+            console.log(documents)
             if (documents.length > 0) {
                 yield put(fetchSuccessDocuments(documents));
             } else {
@@ -57,13 +59,31 @@ function* actionFetchUploadDocuments(action) {
     }
 }
 
+// Rename
+function* actionFetchRenameDocuments(action) {
+    try {
+        const params = action.payload;
+        const response = yield call(fetchRenameDocumentApi, params);
+        if (response.status === 200) {
+            yield put(fetchRenameDocumentsSuccess(response.data));
+            yield put(fetchListDocuments());
+        } else {
+            yield put(fetchRenameDocumentsFailure('Unable to rename document'));
+        }
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+        console.error('Documents rename failed:', errorMessage);
+        yield put(fetchRenameDocumentsFailure(errorMessage));
+    }
+}
+
 
 // Delete
 function* actionFetchDeleteDocuments(action) {
     try {
         const params = action.payload;
         console.log(params);
-        const response = yield call(fetchDeleteDocumentApi, params );
+        const response = yield call(fetchDeleteDocumentApi, params);
         console.log(response);
         if (response.status === 200) {
             const doc = response.data;
@@ -84,5 +104,6 @@ function* actionFetchDeleteDocuments(action) {
 export function* watchDocuments() {
     yield takeLatest(fetchListDocuments.type, actionFetchDocuments);
     yield takeLatest(fetchUploadDocuments.type, actionFetchUploadDocuments);
+    yield takeLatest(fetchRenameDocuments.type, actionFetchRenameDocuments);
     yield takeLatest(fetchDeleteDocuments.type, actionFetchDeleteDocuments);
 }

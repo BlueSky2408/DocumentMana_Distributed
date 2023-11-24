@@ -1,10 +1,6 @@
 // import { colors } from '@constants/colors';
 import { Typography } from '@mui/material';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-// @ts-ignore
-// import iconToastSuccess from '@assets/icons/iconToastSuccess.svg';
 import * as React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';

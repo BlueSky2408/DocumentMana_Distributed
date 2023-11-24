@@ -6,14 +6,15 @@ import { Grid, TextField, FormGroup, FormControlLabel, Checkbox, Button } from '
 import { Link } from "react-router-dom";
 
 export const Form = (props) => {
-    const { children, value, index, handleInputChange, username, email, password, handleSubmit, ...other } = props;
+    const { children, value, index, 
+        handleInputChange, 
+        username, email, password, rePassword, 
+        handleSubmit, 
+        ...other } = props;
     return (
         <Box className={styles.formContainer}>
             <Typography variant="h4" gutterBottom className={styles.title}>
                 Create an account
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom className={styles.subtitle}>
-                If you already have an account <a style={{ color: "#F16255" }}>login</a>
             </Typography>
             <Box
                 component="form"
@@ -34,12 +35,12 @@ export const Form = (props) => {
                             </Grid>
                             <Grid item xs={8}>
                                 <TextField
+                                    name="username"
+                                    value={username}
                                     fullWidth
                                     id="outlined-search"
                                     label="Username"
                                     type="username"
-                                    value={username}
-                                    name="username"
                                     onChange={(event) => handleInputChange(event)}
                                 />
                             </Grid>
@@ -52,12 +53,12 @@ export const Form = (props) => {
                             </Grid>
                             <Grid item xs={8}>
                                 <TextField
+                                    name="email"
+                                    value={email}
                                     fullWidth
                                     id="outlined-search"
                                     label="Email"
                                     type="email"
-                                    value={email}
-                                    name="email"
                                     onChange={(event) => handleInputChange(event)}
                                 />
                             </Grid>
@@ -70,12 +71,12 @@ export const Form = (props) => {
                             </Grid>
                             <Grid item xs={8}>
                                 <TextField
+                                    name="password"
+                                    value={password}
                                     fullWidth
                                     id="outlined-search"
                                     label="Password"
                                     type="password"
-                                    value={password}
-                                    name="password"
                                     onChange={(event) => handleInputChange(event)}
                                 />
                             </Grid>
@@ -88,12 +89,12 @@ export const Form = (props) => {
                             </Grid>
                             <Grid item xs={8}>
                                 <TextField
+                                    name="rePassword"
+                                    value={rePassword}
                                     fullWidth
                                     id="outlined-search"
                                     label="Confirm Password"
-                                    type="password"
-                                    
-                                    name="rePassword"
+                                    type="password"          
                                     onChange={(event) => handleInputChange(event)}
                                 />
                             </Grid>

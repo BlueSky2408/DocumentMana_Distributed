@@ -81,7 +81,7 @@ const login = async (req, res) => {
         }
 
         let option = {
-            maxTime: 20 * 60 * 1000, //The session will expires in 20 minutes
+            maxTime: 30 * 60 * 1000, //The session will expires in 20 minutes
             httpOnly: true, //The cookie is only accessible by the web browser
             secure: true,
             sameSite: 'None',

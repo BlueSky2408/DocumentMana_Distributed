@@ -47,10 +47,6 @@ const Header = () => {
         // Handle search icon click
     };
 
-    const notificationsClick = () => {
-        // Handle notifications icon click
-    };
-
     const handleLogout = () => {
         localStorage.removeItem('TOKEN');
         localStorage.removeItem('USER_INFO');
@@ -74,14 +70,9 @@ const Header = () => {
             </Box>
 
             <Box className={styles.iconsContainer}>
-                <NotificationsIcon className={styles.notification} onClick={notificationsClick} />
-
-
                 <IconButton onClick={toggleOptions}>
                     <Avatar sx={{ bgcolor: deepOrange[500] }}>N</Avatar>
                 </IconButton>
-
-
                 {showOptions && (
                     <Box className={styles.optionList} ref={optionsRef}>
                         <Box className={styles.submenu}>

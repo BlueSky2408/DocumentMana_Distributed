@@ -1,12 +1,15 @@
 const express = require('express');
 const { Verify } = require('../middleware/verify');
-const { getAllDocuments, getUserDocuments,
-    uploadDocuments, handleUpload, handleDelete, handleCreateFolder } = require('../controllers/documents-controller');
+const { getAllDocuments, searchDocuments, getUserDocuments,
+    uploadDocuments, handleUpload, handleRename, handleDelete, 
+    handleCreateFolder } = require('../controllers/documents-controller');
 const router = express.Router();
 
 router.use(Verify);
 router.get('/list', getUserDocuments);
+router.get('/search', searchDocuments);
 router.post('/upload', uploadDocuments, handleUpload);
+router.put('/rename', handleRename);
 router.delete('/delete', handleDelete);
 router.post('/createFolder', handleCreateFolder)
 

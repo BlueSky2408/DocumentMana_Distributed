@@ -13,7 +13,7 @@ const routerUsers = require('./routes/users-route');
 //Apply cookie-parser middleware
 app.use(cookieParser());
 //Run the PresentationTier
-app.use(express.static(__dirname + '/../PresentationTier/react-ui'))
+app.use(express.static(__dirname + '/../PresentationTier/react-ui/build'))
 //Parse requests of content-type - application/json
 app.use(express.json());
 //Parse requests of content-type - application/x-www-form-urlencoded

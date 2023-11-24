@@ -19,6 +19,17 @@ const getAllDocuments = async (req, res) => {
     }
 }
 
+const searchDocuments = async (req, res) => {
+    try {
+        const searchQuery = req.query.query;
+        const searchResults = await Documents.find({ name: { $regex: searchQuery, $options: 'i' } });
+        res.status(200).json({ documents: searchResults });
+    } catch (error) {
+        console.error('Search error', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 const getUserDocuments = async (req, res) => {
     try {
         const docs = await Documents.find({ owner: req.user })
@@ -162,7 +173,6 @@ const handleUpload = async (req, res) => {
 const handleDelete = async (req, res) => {
     try {
         const deletedDocs = await Documents.findOneAndDelete({ name: req.body });
-        console.log(deletedDocs);
         res.status(200).json({
             status: 'Success',
             data: [deletedDocs],
@@ -177,9 +187,42 @@ const handleDelete = async (req, res) => {
     }
 };
 
+const handleRename = async (req, res) => {
+    try {
+        const { currentName, newName } = req.body;
+        const updatedDoc = await Documents.findOneAndUpdate(
+            { name: currentName },
+            { $set: { name: newName } },
+            { new: true }
+        );
+
+        if (!updatedDoc) {
+            return res.status(404).json({ message: "Document not found" });
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            data: updatedDoc,
+            message: 'Document renamed successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error'
+        });
+    }
+};
+
 const handleCreateFolder = async (req, res) => {
     try {
         const { folderName, parentFolderId } = req.body;
+
+        // Check if the folder already exists
+        const existingFolder = await Documents.findOne({ name: folderName, isFolder: true });
+        if (existingFolder) {
+            return res.status(400).json({ message: 'Folder already exists' });
+        }
 
         const newFolder = await Documents.create({
             name: folderName,
@@ -188,19 +231,18 @@ const handleCreateFolder = async (req, res) => {
         });
 
         const savedFolder = await newFolder.save();
-
-        return res.status(201).json({
-            data: [savedFolder],
+        res.status(201).json({
+            data: savedFolder,
             message: 'Folder created successfully',
         });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
+        res.status(500).json({
             status: 'error',
             message: 'Internal server error',
         });
     }
-}
+};
 
 
 // const handleUpload = async (req, res) => {
@@ -246,6 +288,7 @@ const handleCreateFolder = async (req, res) => {
 
 
 module.exports = {
-    getAllDocuments, getUserDocuments,
-    uploadDocuments, handleUpload, handleDelete, handleCreateFolder
+    getAllDocuments, searchDocuments, getUserDocuments,
+    uploadDocuments, handleUpload, handleRename, handleDelete,
+    handleCreateFolder
 };

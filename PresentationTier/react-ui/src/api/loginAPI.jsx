@@ -1,6 +1,8 @@
 import { axiosBodyToAPI } from './axiosService';
-const API_LOGIN = "http://localhost:3001/api/users/login";
-const API_REGISTER = "http://localhost:3001/api/users/signup";
+
+const API_HOST = process.env.API_HOST || "http://localhost";
+const API_LOGIN = `${API_HOST}/api/users/login`;
+const API_REGISTER = `${API_HOST}/api/users/signup`;
 
 
 export const fetchLoginApi = (params) => {

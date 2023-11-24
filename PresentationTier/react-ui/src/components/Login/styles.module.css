@@ -3,11 +3,8 @@
     background-color: #fff;
     width: 100vw;
     overflow: hidden;
-    height: 80vh;
+    height: 100%;
     padding: 50px 50px;
-    display: flex;
-    align-content: center;
-    flex-wrap: wrap;
 }
 
 .logoContainer {

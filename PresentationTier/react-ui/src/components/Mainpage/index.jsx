@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { Box } from '@mui/material'
 import Sidebars from '../../pages/Sidebars'
 import Headers from '../../pages/Headers/index'
+import RenameDialog from '../../pages/RenameDialog'
 import styles from './style.module.css';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeleteDocuments, fetchListDocuments } from '../../reducers/documents';
-import _ from 'lodash';
+import { fetchListDocuments, fetchRenameDocuments, fetchDeleteDocuments } from '../../reducers/documents';
+import _, { flow } from 'lodash';
 
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -150,7 +151,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected, handleDelete, handleRename, handleMove, ...other } = props;
+    const { numSelected, documentSelected, handleDelete, handleRename, handleMove, ...other } = props;
 
     return (
         <Toolbar
@@ -289,8 +290,12 @@ export const Home = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [rows, setRows] = useState([]);
 
+
     // const isAuthenticated = useSelector(state => state.login.isAuthenticated);
     const documents = useSelector(state => state.documents.dataList);
+    const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [selectedDocument, setSelectedDocument] = useState(null);
+    const [newDocumentName, setNewDocumentName] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -309,6 +314,17 @@ export const Home = () => {
 
         fetchData();
     }, [dispatch, documents, rows]);
+
+    // useEffect(() => {
+    //     dispatch(fetchListDocuments());
+    //     console.log(dispatch(fetchListDocuments()));
+    // }, [dispatch]);
+
+    // useEffect(() => {
+    //     if (documents && documents.length > 0) {
+    //         setRows(documents[0]);
+    //     }
+    // }, [documents]);
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -330,16 +346,36 @@ export const Home = () => {
     //     }
     // }, [documents]);
 
-    const handleDelete = async () => {
+    // Rename
+    const handleRename = () => {
+        const selectedDocName = selected[0];
+        const documentToRename = rows.find(row => row.name === selectedDocName);
+        if (documentToRename) {
+            setSelectedDocument(documentToRename.name);
+            setRenameDialogOpen(true);
+        }
+    };
+
+    const handleRenameConfirm = async () => {
+        const renameParams = {
+            currentName: selectedDocument,
+            newName: newDocumentName
+        };
+
+        dispatch(fetchRenameDocuments(renameParams));
+        setRenameDialogOpen(false);
+        setSelectedDocument(null);
+    };
+
+    // Delete
+    const handleDelete = () => {
         const selectedDocs = rows.filter(row => selected.includes(row.name));
-        console.log(selectedDocs);
-        const documentIds = selectedDocs.map(doc => doc.name);
-        console.log(documentIds);
-        dispatch(fetchDeleteDocuments(documentIds));
+        const documentNames = selectedDocs.map(doc => doc.name);
+        dispatch(fetchDeleteDocuments(documentNames));
         setSelected([]);
     };
 
-
+    // Table Function Handling
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -408,7 +444,20 @@ export const Home = () => {
                 <Box className={styles.mainContent}>
                     <Box sx={{ width: '100%' }}>
                         <Paper sx={{ width: '100%', mb: 2 }}>
-                            <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} />
+                            <EnhancedTableToolbar
+                                numSelected={selected.length}
+                                handleRename={handleRename}
+                                handleDelete={handleDelete}
+                            />
+                            {renameDialogOpen && (
+                                <RenameDialog
+                                    open={renameDialogOpen}
+                                    onClose={() => setRenameDialogOpen(false)}
+                                    documentName={selectedDocument}
+                                    onRenameConfirm={handleRenameConfirm}
+                                    onNameChange={setNewDocumentName}
+                                />
+                            )}
                             <TableContainer>
                                 <Table
                                     sx={{ minWidth: 750 }}
@@ -424,7 +473,6 @@ export const Home = () => {
                                         rowCount={rows.length}
                                     />
                                     <TableBody>
-                                        {console.log(visibleRows[0])}
                                         {visibleRows.map((row, index) => {
                                             const isItemSelected = isSelected(row.name);
                                             const labelId = `enhanced-table-checkbox-${index}`;

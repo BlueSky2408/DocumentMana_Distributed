@@ -37,7 +37,6 @@ function* actionFetchLogin(action) {
 
 function* actionFetchRegister(action) {
     try {
-        yield delay(500);
         const { params, navigate } = action.payload;
         const response = yield call(fetchRegisterApi, params);
         console.log(response)

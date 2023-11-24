@@ -1,7 +1,6 @@
 import './App.css';
 // import Footers from './pages/Footers';
 import Home from './components/Mainpage';
-import Headers from './pages/Headers';
 import LoginContainers from './components/Login';
 import RegisterContainer from './components/Register';
 import { Box } from '@mui/material'
